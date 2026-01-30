@@ -29,28 +29,36 @@ namespace HousingStockVio
         {
             InitializeComponent();
             Loaded += ApplicationsPage_Loaded;
-            _context = new HousingStock();
 
-            // Скрываем кнопки в зависимости от роли
+            // Используем статический контекст
+            _context = new HousingStock();
+            applications = new List<RepairApplication>();
+
             ConfigureButtonsForRole();
         }
 
         private void ConfigureButtonsForRole()
         {
-            string role = CurrentUser.RoleName.ToLower();
-
-            // Для жителей и сотрудников скрываем кнопки удаления
-            if (role == "житель" || role == "сотрудник")
+            try
             {
-                DeleteButton.Visibility = Visibility.Collapsed;
+                string role = CurrentUser.RoleName.ToLower();
+
+                if (role == "житель" || role == "сотрудник")
+                {
+                    DeleteButton.Visibility = Visibility.Collapsed;
+                }
+
+                if (role == "житель")
+                {
+                    EditButton.Visibility = Visibility.Collapsed;
+                    StatusFilter.Visibility = Visibility.Collapsed;
+                    StatusText.Text = "Мои заявки";
+                }
             }
-
-            // Для жителей показываем только кнопку добавления
-            if (role == "житель")
+            catch (Exception ex)
             {
-                EditButton.Visibility = Visibility.Collapsed;
-                StatusFilter.Visibility = Visibility.Collapsed;
-                StatusText.Text = "Мои заявки";
+                MessageBox.Show($"Ошибка настройки кнопок: {ex.Message}",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -63,201 +71,74 @@ namespace HousingStockVio
         {
             try
             {
-                // Проверяем, существует ли таблица Applications в контексте
-                if (!_context.Database.Exists() || !_context.Database.CompatibleWithModel(false))
+                if (_context == null)
                 {
-                    // Базы данных нет или несовместима, используем тестовые данные
-                    CreateMockApplications();
-                    MessageBox.Show(
-                        "База данных не доступна или несовместима.\n" +
-                        "Используются тестовые данные для демонстрации.",
-                        "Внимание",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-                }
-                else
-                {
-                    // База данных доступна, загружаем данные с фильтрацией по роли
-                    LoadApplicationsFromDatabase();
+                    throw new Exception("Контекст базы данных не инициализирован");
                 }
 
+                // Проверяем подключение к БД
+                if (!_context.Database.Exists())
+                {
+                    throw new Exception("База данных не доступна. Проверьте строку подключения в App.config");
+                }
+
+                LoadApplicationsFromDatabase();
                 UpdateApplicationsDisplay();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Ошибка при загрузке заявок: {ex.Message}\n" +
-                    "Будут использованы тестовые данные.",
-                    "Ошибка",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка загрузки заявок: {ex.Message}\n\n" +
+                               "Проверьте:\n" +
+                               "1. Наличие строки подключения 'HousingStock' в App.config\n" +
+                               "2. Доступность сервера базы данных\n" +
+                               "3. Существование базы данных и таблиц",
+                               "Ошибка подключения",
+                               MessageBoxButton.OK,
+                               MessageBoxImage.Error);
 
-                CreateMockApplications();
-                UpdateApplicationsDisplay();
+                // Очищаем список и показываем пустую таблицу
+                applications = new List<RepairApplication>();
+                ApplicationsList.ItemsSource = null;
+                StatusText.Text = "Ошибка загрузки данных";
             }
         }
 
         private void LoadApplicationsFromDatabase()
         {
-            try
-            {
-                string role = CurrentUser.RoleName.ToLower();
-                string currentUserName = CurrentUser.FullName;
-
-                IQueryable<Applications> query = _context.Applications;
-
-                // Добавляем фильтрацию в зависимости от роли
-                if (role == "сотрудник")
-                {
-                    query = query.Where(a =>
-                        a.AssignedEmployee.Contains(currentUserName) ||
-                        a.Responsible.Contains(currentUserName));
-                }
-                else if (role == "житель")
-                {
-                    query = query.Where(a => a.ApplicantName.Contains(currentUserName));
-                }
-
-                // Загружаем данные
-                applications = query
-                    .OrderByDescending(a => a.CreateDate)
-                    .Select(a => new RepairApplication
-                    {
-                        Id = a.ID,
-                        Address = a.Address,
-                        ApplicantName = a.ApplicantName,
-                        Phone = a.Phone,
-                        Description = a.Description,
-                        Responsible = a.Responsible,
-                        Status = a.Status,
-                        CreateDate = a.CreateDate,
-                        CompleteDate = a.CompleteDate,
-                        AssignedEmployee = a.AssignedEmployee
-                    })
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка загрузки данных из базы: {ex.Message}", ex);
-            }
-        }
-
-        private void CreateMockApplications()
-        {
             string role = CurrentUser.RoleName.ToLower();
             string currentUserName = CurrentUser.FullName;
 
-            // Базовый список тестовых заявок
-            var allApplications = new List<RepairApplication>
-            {
-                new RepairApplication
-                {
-                    Id = 1,
-                    Address = "ул. Ленина, 10, кв. 5",
-                    ApplicantName = "Иванов Иван Иванович",
-                    Phone = "+7 (999) 111-11-11",
-                    Description = "Протекает кран на кухне. Необходима замена смесителя.",
-                    Responsible = "Петров П.П.",
-                    AssignedEmployee = "Петров П.П.",
-                    Status = "Открыта",
-                    CreateDate = DateTime.Now.AddDays(-5)
-                },
-                new RepairApplication
-                {
-                    Id = 2,
-                    Address = "ул. Советская, 25, кв. 42",
-                    ApplicantName = "Сидоров Сергей Сергеевич",
-                    Phone = "+7 (999) 222-22-22",
-                    Description = "Не работает розетка в зале. Требуется замена электропроводки.",
-                    Responsible = "Петров П.П.",
-                    AssignedEmployee = "Петров П.П.",
-                    Status = "В работе",
-                    CreateDate = DateTime.Now.AddDays(-3)
-                },
-                new RepairApplication
-                {
-                    Id = 3,
-                    Address = "пр. Мира, 15, кв. 17",
-                    ApplicantName = "Козлова Мария Дмитриевна",
-                    Phone = "+7 (999) 333-33-33",
-                    Description = "Трещина в стене между кухней и гостиной. Требуется штукатурка и покраска.",
-                    Responsible = "Сидоров С.С.",
-                    AssignedEmployee = "Сидоров С.С.",
-                    Status = "Завершена",
-                    CreateDate = DateTime.Now.AddDays(-10),
-                    CompleteDate = DateTime.Now.AddDays(-2)
-                },
-                new RepairApplication
-                {
-                    Id = 4,
-                    Address = "ул. Пушкина, 5, кв. 8",
-                    ApplicantName = "Николаев Николай Николаевич",
-                    Phone = "+7 (999) 444-44-44",
-                    Description = "Забита канализация в ванной комнате. Требуется прочистка труб.",
-                    Responsible = "Иванов И.И.",
-                    AssignedEmployee = "Иванов И.И.",
-                    Status = "В работе",
-                    CreateDate = DateTime.Now.AddDays(-2)
-                }
-            };
+            IQueryable<Applications> query = _context.Applications;
 
-            // Фильтруем заявки в зависимости от роли
+            // Добавляем фильтрацию в зависимости от роли
             if (role == "сотрудник")
             {
-                // Для сотрудника показываем только его заявки
-                applications = allApplications
-                    .Where(app =>
-                        (!string.IsNullOrEmpty(app.AssignedEmployee) && app.AssignedEmployee.Contains(currentUserName)) ||
-                        (!string.IsNullOrEmpty(app.Responsible) && app.Responsible.Contains(currentUserName)))
-                    .ToList();
-
-                // Если у сотрудника нет заявок, показываем пример
-                if (applications.Count == 0)
-                {
-                    applications.Add(new RepairApplication
-                    {
-                        Id = 5,
-                        Address = "ул. Гагарина, 12",
-                        ApplicantName = "Пример заявителя",
-                        Phone = "+7 (999) 555-55-55",
-                        Description = "Пример заявки для сотрудника " + currentUserName,
-                        Responsible = currentUserName,
-                        AssignedEmployee = currentUserName,
-                        Status = "В работе",
-                        CreateDate = DateTime.Now.AddDays(-1)
-                    });
-                }
+                query = query.Where(a =>
+                    (a.AssignedEmployee != null && a.AssignedEmployee.Contains(currentUserName)) ||
+                    (a.Responsible != null && a.Responsible.Contains(currentUserName)));
             }
             else if (role == "житель")
             {
-                // Для жителя показываем только его заявки
-                applications = allApplications
-                    .Where(app => !string.IsNullOrEmpty(app.ApplicantName) &&
-                           app.ApplicantName.Contains(currentUserName))
-                    .ToList();
+                query = query.Where(a => a.ApplicantName != null && a.ApplicantName.Contains(currentUserName));
+            }
 
-                // Если у жителя нет заявок, показываем пример
-                if (applications.Count == 0)
+            // Загружаем данные
+            applications = query
+                .OrderByDescending(a => a.CreateDate)
+                .Select(a => new RepairApplication
                 {
-                    applications.Add(new RepairApplication
-                    {
-                        Id = 6,
-                        Address = "Ваш адрес",
-                        ApplicantName = currentUserName,
-                        Phone = "+7 (999) 000-00-00",
-                        Description = "Пример вашей заявки",
-                        Responsible = "Сотрудник компании",
-                        AssignedEmployee = "Сотрудник компании",
-                        Status = "Открыта",
-                        CreateDate = DateTime.Now
-                    });
-                }
-            }
-            else
-            {
-                // Для администратора и руководителя показываем все заявки
-                applications = allApplications;
-            }
+                    Id = a.ID,
+                    Address = a.Address,
+                    ApplicantName = a.ApplicantName,
+                    Phone = a.Phone,
+                    Description = a.Description,
+                    Responsible = a.Responsible,
+                    Status = a.Status,
+                    CreateDate = a.CreateDate,
+                    CompleteDate = a.CompleteDate,
+                    AssignedEmployee = a.AssignedEmployee
+                })
+                .ToList();
         }
 
         private void UpdateApplicationsDisplay()
@@ -379,6 +260,8 @@ namespace HousingStockVio
         {
             try
             {
+                
+
                 EditApplicationWindow addWindow = new EditApplicationWindow();
                 addWindow.Owner = Window.GetWindow(this);
                 addWindow.Title = "Добавление новой заявки";
@@ -415,6 +298,8 @@ namespace HousingStockVio
         {
             try
             {
+                
+
                 RepairApplication selectedApplication = ApplicationsList.SelectedItem as RepairApplication;
 
                 if (selectedApplication == null)
@@ -476,6 +361,7 @@ namespace HousingStockVio
         {
             try
             {
+
                 RepairApplication selectedApplication = ApplicationsList.SelectedItem as RepairApplication;
 
                 if (selectedApplication == null)
@@ -553,7 +439,6 @@ namespace HousingStockVio
             try
             {
                 // Обновляем контекст и загружаем данные
-                _context?.Dispose();
                 _context = new HousingStock();
 
                 LoadApplications();

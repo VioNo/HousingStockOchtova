@@ -20,7 +20,7 @@ namespace HousingStockVio
         {
         }
         public static HousingStock context;
-        private static HousingStock GetContext()
+        public static HousingStock GetContext()
         {
             if (context == null)
                 context = new HousingStock();
