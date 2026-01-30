@@ -1,0 +1,167 @@
+﻿<Page x:Class="HousingStockVio.ApplicationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Заявки на ремонт"
+      Background="#FFFFFFFF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <Border Grid.Row="0" 
+                Background="#FFFFFFFF"
+                BorderBrush="#FFCCCCCC"
+                BorderThickness="0,0,0,1"
+                Padding="30,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Заголовок и статистика -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="🔧 ЗАЯВКИ НА РЕМОНТ"
+                              FontFamily="Segoe UI"
+                              FontSize="28"
+                              FontWeight="Bold"
+                              Foreground="#FF333333"/>
+
+                    <TextBlock x:Name="StatusText" 
+                              Text="Всего заявок: 0"
+                              FontFamily="Segoe UI"
+                              FontSize="14"
+                              Foreground="#FF666666"
+                              Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Панель инструментов -->
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal"
+                           VerticalAlignment="Center">
+                    <!-- Фильтры -->
+                    <Border Background="#FFF4E8D3"
+                            Padding="10,5"
+                            Margin="0,0,15,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Фильтр:"
+                                      FontFamily="Segoe UI"
+                                      FontSize="13"
+                                      Foreground="#FF333333"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,5,0"/>
+
+                            <ComboBox x:Name="StatusFilter" 
+                                     Width="130"
+                                     Height="35"
+                                     FontFamily="Segoe UI"
+                                     FontSize="13"
+                                     SelectedIndex="0"
+                                     SelectionChanged="StatusFilter_SelectionChanged">
+                                <ComboBoxItem Content="Все"/>
+                                <ComboBoxItem Content="Открыта"/>
+                                <ComboBoxItem Content="В работе"/>
+                                <ComboBoxItem Content="Завершена"/>
+                                <ComboBoxItem Content="Отменена"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Кнопки действий -->
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="AddButton" 
+                                Content="+ Создать"
+                                Style="{StaticResource PrimaryButton}"
+                                Height="45"
+                                MinWidth="120"
+                                Margin="0,0,10,0"
+                                Click="AddButton_Click"
+                                ToolTip="Создать новую заявку на ремонт"/>
+
+                        <Button x:Name="EditButton" 
+                                Content="✏️ Редактировать"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="45"
+                                MinWidth="140"
+                                Margin="0,0,10,0"
+                                Click="EditButton_Click"
+                                ToolTip="Редактировать выбранную заявку"/>
+
+                        <Button x:Name="DeleteButton" 
+                                Content="🗑️ Удалить"
+                                Style="{StaticResource DangerButton}"
+                                Height="45"
+                                MinWidth="110"
+                                Margin="0,0,10,0"
+                                Click="DeleteButton_Click"
+                                ToolTip="Удалить выбранную заявку"/>
+
+                        <Button x:Name="RefreshButton" 
+                                Content="🔄 Обновить"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="45"
+                                Width="45"
+                                Click="RefreshButton_Click"
+                                ToolTip="Обновить список заявок"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Таблица заявок -->
+            <Border Grid.Row="0" 
+                    Background="White"
+                    Margin="30"
+                    BorderBrush="#FFCCCCCC"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок таблицы -->
+                    <Border Grid.Row="0" 
+                            Background="#FF67BA80"
+                            Padding="20,15">
+                        <TextBlock Text="СПИСОК ЗАЯВОК"
+                                  FontFamily="Segoe UI"
+                                  FontSize="16"
+                                  FontWeight="Bold"
+                                  Foreground="White"/>
+                    </Border>
+
+                    <!-- Простая таблица -->
+                    <ListView x:Name="ApplicationsList" 
+                             Grid.Row="1"
+                             BorderThickness="0"
+                             SelectionMode="Single"
+                             MouseDoubleClick="ApplicationsList_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                                <GridViewColumn Header="Адрес" Width="200" DisplayMemberBinding="{Binding Address}"/>
+                                <GridViewColumn Header="Заявитель" Width="150" DisplayMemberBinding="{Binding ApplicantName}"/>
+                                <GridViewColumn Header="Телефон" Width="120" DisplayMemberBinding="{Binding Phone}"/>
+                                <GridViewColumn Header="Описание" Width="250" DisplayMemberBinding="{Binding Description}"/>
+                                <GridViewColumn Header="Ответственный" Width="150" DisplayMemberBinding="{Binding Responsible}"/>
+                                <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                                <GridViewColumn Header="Дата создания" Width="130" 
+                                               DisplayMemberBinding="{Binding CreateDate, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

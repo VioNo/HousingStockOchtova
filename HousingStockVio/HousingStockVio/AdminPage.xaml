@@ -1,0 +1,178 @@
+﻿<Page x:Class="HousingStockVio.AdminPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Панель администратора"
+      Background="{StaticResource PrimaryBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource AccentBrush}" 
+                Padding="20">
+            <TextBlock Text="Панель администратора" 
+                      FontSize="24" 
+                      FontWeight="Bold" 
+                      Foreground="White"
+                      HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Контент -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Левая колонка -->
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <Border Background="#F8F9FA" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Статистика системы" 
+                                  FontSize="18" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,15"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Всего домов:" Width="150"/>
+                            <TextBlock x:Name="TotalHousesText" 
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Всего владельцев:" Width="150"/>
+                            <TextBlock x:Name="TotalOwnersText" 
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Активные заявки:" Width="150"/>
+                            <TextBlock x:Name="TotalApplicationsText" 
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Общая задолженность:" Width="150"/>
+                            <TextBlock x:Name="TotalDebtText" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource ErrorBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#F8F9FA" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Управление системой" 
+                                  FontSize="18" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Для доступа к функциям управления используйте меню навигации в главном окне:" 
+                                  TextWrapping="Wrap"
+                                  Margin="0,0,0,10"/>
+
+                        <StackPanel Margin="10,5,0,5">
+                            <TextBlock Text="• Заявки на ремонт - управление заявками" 
+                                      FontSize="13"/>
+                            <TextBlock Text="• История заявок - просмотр истории выполнения" 
+                                      FontSize="13"/>
+                            <TextBlock Text="• Партнеры - управление партнерами" 
+                                      FontSize="13"/>
+                            <TextBlock Text="• Адреса домов - информация о домах" 
+                                      FontSize="13"/>
+                            <TextBlock Text="• Владельцы - информация о владельцах" 
+                                      FontSize="13"/>
+                            <TextBlock Text="• Долги и Платежи - финансовая информация" 
+                                      FontSize="13"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Правая колонка -->
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <Border Background="#F8F9FA" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Последние заявки" 
+                                  FontSize="18" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,15"/>
+
+                        <ListView x:Name="RecentApplicationsList" 
+                                 Height="200"
+                                 BorderThickness="1"
+                                 BorderBrush="{StaticResource BorderBrush}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                                    <GridViewColumn Header="Адрес" Width="150" DisplayMemberBinding="{Binding Address}"/>
+                                    <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                                    <GridViewColumn Header="Дата" Width="100" 
+                                                   DisplayMemberBinding="{Binding CreateDate, StringFormat='dd.MM.yyyy'}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#F8F9FA" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Финансовые показатели" 
+                                  FontSize="18" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,15"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Месячный доход:" Width="150"/>
+                            <TextBlock x:Name="MonthlyIncomeText" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource SuccessBrush}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Месячные расходы:" Width="150"/>
+                            <TextBlock x:Name="MonthlyExpensesText" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource ErrorBrush}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Чистая прибыль:" Width="150"/>
+                            <TextBlock x:Name="NetProfitText" 
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Рентабельность:" Width="150"/>
+                            <TextBlock x:Name="ProfitabilityText" 
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <Separator Margin="0,15,0,10"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <TextBlock Text="Общая эффективность:" Width="150"/>
+                            <TextBlock x:Name="EfficiencyText" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource SuccessBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,124 @@
+﻿<Window x:Class="HousingStockVio.CreateScheduleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создание графика работ" 
+        Height="500" 
+        Width="600"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Icon="Resources/icon.ico">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource AccentBrush}" 
+                CornerRadius="5"
+                Padding="10"
+                Margin="0,0,0,15">
+            <TextBlock Text="Создание графика работ" 
+                      FontSize="18" 
+                      FontWeight="Bold"
+                      Foreground="White"
+                      HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Форма -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,15">
+            <!-- Период -->
+            <StackPanel Margin="0,0,0,15">
+                <Label Content="Период графика *" 
+                      Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="PeriodComboBox" 
+                         Style="{StaticResource ComboBoxStyle}"
+                         SelectedIndex="0">
+                    <ComboBoxItem Content="На неделю"/>
+                    <ComboBoxItem Content="На месяц"/>
+                    <ComboBoxItem Content="На квартал"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Дата начала -->
+            <StackPanel Margin="0,0,0,15">
+                <Label Content="Дата начала *" 
+                      Style="{StaticResource LabelStyle}"/>
+                <DatePicker x:Name="StartDatePicker" 
+                           FontSize="14"
+                           Height="35"
+                           Margin="0,5,0,0"
+                           Padding="5"
+                           BorderThickness="1"
+                           BorderBrush="{StaticResource BorderBrush}"
+                           SelectedDateFormat="Short"/>
+            </StackPanel>
+
+            <!-- Работы -->
+            <StackPanel Margin="0,0,0,15">
+                <Label Content="Типы работ" 
+                      Style="{StaticResource LabelStyle}"/>
+                <ListBox x:Name="WorkTypesList" 
+                        Height="150"
+                        Margin="0,5,0,0"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderBrush}">
+                    <ListBoxItem Content="Обход домов"/>
+                    <ListBoxItem Content="Проверка лифтов"/>
+                    <ListBoxItem Content="Уборка территории"/>
+                    <ListBoxItem Content="Техническое обслуживание"/>
+                    <ListBoxItem Content="Ремонтные работы"/>
+                </ListBox>
+            </StackPanel>
+
+            <!-- Примечание -->
+            <StackPanel>
+                <Label Content="Примечание" 
+                      Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="NoteTextBox" 
+                        Height="60"
+                        Margin="0,5,0,0"
+                        FontSize="14"
+                        Padding="5"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        TextWrapping="Wrap"
+                        AcceptsReturn="True"
+                        VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0">
+
+            <Button x:Name="SaveButton" 
+                    Content="Создать график" 
+                    Style="{StaticResource PrimaryButton}"
+                    Width="150"
+                    Height="40"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Click="SaveButton_Click"/>
+
+            <Button x:Name="CancelButton" 
+                    Content="Отмена" 
+                    Style="{StaticResource SecondaryButton}"
+                    Width="120"
+                    Height="40"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Margin="10,0,0,0"
+                    Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

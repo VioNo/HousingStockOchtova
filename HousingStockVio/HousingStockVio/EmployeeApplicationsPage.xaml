@@ -1,0 +1,93 @@
+﻿<Page x:Class="HousingStockVio.EmployeeApplicationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Мои заявки"
+      Background="{StaticResource PrimaryBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель инструментов -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource SecondaryBrush}" 
+                Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="RefreshButton" 
+                        Content="Обновить" 
+                        Style="{StaticResource PrimaryButton}"
+                        Width="100" 
+                        Height="35"
+                        Margin="0,0,10,0"
+                        Click="RefreshButton_Click"
+                        ToolTip="Обновить список заявок"/>
+
+                <Button x:Name="ChangeStatusButton" 
+                        Content="Изменить статус" 
+                        Style="{StaticResource PrimaryButton}"
+                        Width="120" 
+                        Height="35"
+                        Margin="0,0,10,0"
+                        Click="ChangeStatusButton_Click"
+                        ToolTip="Изменить статус выбранной заявки"/>
+
+                <Button x:Name="ViewDetailsButton" 
+                        Content="Просмотреть" 
+                        Style="{StaticResource PrimaryButton}"
+                        Width="120" 
+                        Height="35"
+                        Click="ViewDetailsButton_Click"
+                        ToolTip="Просмотреть детали заявки"/>
+
+                <TextBlock Text="Фильтр по статусу:" 
+                          VerticalAlignment="Center"
+                          Margin="20,0,5,0"/>
+
+                <ComboBox x:Name="StatusFilter" 
+                         Width="120" 
+                         Height="30"
+                         SelectedIndex="0"
+                         SelectionChanged="StatusFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="В работе"/>
+                    <ComboBoxItem Content="Завершена"/>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+
+        <!-- Список заявок -->
+        <ListView x:Name="ApplicationsList" 
+                 Grid.Row="1" 
+                 Margin="10"
+                 SelectionMode="Single"
+                 MouseDoubleClick="ApplicationsList_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Адрес" Width="200" DisplayMemberBinding="{Binding Address}"/>
+                    <GridViewColumn Header="Заявитель" Width="150" DisplayMemberBinding="{Binding ApplicantName}"/>
+                    <GridViewColumn Header="Категория" Width="180" DisplayMemberBinding="{Binding CategoryName}"/>
+                    <GridViewColumn Header="Описание" Width="250" DisplayMemberBinding="{Binding Description}"/>
+                    <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Дата создания" Width="120" 
+                                   DisplayMemberBinding="{Binding CreateDate, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                    <GridViewColumn Header="Дней" Width="50" 
+                                   DisplayMemberBinding="{Binding DaysInWork}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Статус бар -->
+        <Border Grid.Row="2" 
+                Background="{StaticResource BorderBrush}" 
+                Height="30">
+            <TextBlock x:Name="StatusText" 
+                      Text="Загружено заявок: 0" 
+                      VerticalAlignment="Center"
+                      Margin="10,0,0,0"/>
+        </Border>
+    </Grid>
+</Page>

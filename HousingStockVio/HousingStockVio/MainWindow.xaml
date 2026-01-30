@@ -1,0 +1,110 @@
+﻿<Window x:Class="HousingStockVio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HousingStockVio"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource SecondaryBrush}" 
+                Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Заголовок -->
+                <TextBlock Grid.Column="1" 
+                          Text="Управляющая компания" 
+                          FontSize="24" 
+                          FontWeight="Bold" 
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"/>
+
+                <!-- Информация о пользователе -->
+                <StackPanel Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+                    <TextBlock x:Name="UserInfoText"
+                              FontSize="12"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Панель навигации -->
+            <Border Grid.Column="0" 
+                    Background="#F8F9FA" 
+                    BorderBrush="{StaticResource BorderBrush}" 
+                    BorderThickness="0,0,1,0"
+                    Width="200">
+
+                <StackPanel Margin="10">
+                    <!-- Кнопка Назад -->
+                    <Button x:Name="BackButton"
+                            Content="← Назад"
+                            Style="{StaticResource SecondaryButton}"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            Click="BackButton_Click"
+                            Visibility="Collapsed"/>
+
+                    <!-- Основные кнопки -->
+                    <Button Content="Заявки на ремонт" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            Click="ApplicationsButton_Click"/>
+
+                    <Button Content="История заявок" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            Click="HistoryButton_Click"/>
+
+                    <Button Content="Статистика" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            Click="StatisticsButton_Click"/>
+
+                    <!-- Кнопка выхода -->
+                    <Button Content="Выход" 
+                            Style="{StaticResource DangerButton}"
+                            Height="40"
+                            Margin="0,20,0,0"
+                            Click="LogoutButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Область данных -->
+            <Border Grid.Column="1" 
+                    Background="{StaticResource PrimaryBrush}"
+                    Padding="20">
+                <Frame x:Name="MainFrame"
+                       NavigationUIVisibility="Hidden"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

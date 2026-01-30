@@ -1,0 +1,248 @@
+﻿<Page x:Class="HousingStockVio.ApplicationHistoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="История выполнения заявок"
+      Background="#FFFFFFFF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <Border Grid.Row="0" 
+                Background="#FFFFFFFF"
+                BorderBrush="#FFCCCCCC"
+                BorderThickness="0,0,0,1"
+                Padding="30,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Заголовок и статистика -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="📜 ИСТОРИЯ ЗАЯВОК"
+                              FontFamily="Segoe UI"
+                              FontSize="28"
+                              FontWeight="Bold"
+                              Foreground="#FF333333"/>
+
+                    <TextBlock x:Name="StatusText" 
+                              Text="Всего заявок: 0"
+                              FontFamily="Segoe UI"
+                              FontSize="14"
+                              Foreground="#FF666666"
+                              Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Панель инструментов -->
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal"
+                           VerticalAlignment="Center">
+                    <!-- Кнопка обновления -->
+                    <Button Content="🔄 Обновить" 
+                            Style="{StaticResource SecondaryButton}"
+                            Height="45"
+                            MinWidth="120"
+                            FontWeight="SemiBold"
+                            Click="RefreshButton_Click"
+                            Margin="0,0,15,0"/>
+
+                    <!-- Тип отчета -->
+                    <Border Background="#FFF4E8D3"
+                            Padding="10,5"
+                            CornerRadius="8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊 Отчет:"
+                                      FontFamily="Segoe UI"
+                                      FontSize="13"
+                                      Foreground="#FF333333"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,10,0"/>
+
+                            <ComboBox x:Name="ReportTypeCombo" 
+                                     Width="180"
+                                     Height="35"
+                                     FontFamily="Segoe UI"
+                                     FontSize="13"
+                                     SelectedIndex="0"
+                                     SelectionChanged="ReportTypeCombo_SelectionChanged">
+                                <ComboBoxItem Content="Все заявки"/>
+                                <ComboBoxItem Content="По исполнителям"/>
+                                <ComboBoxItem Content="По адресам"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Панель фильтров -->
+            <Border Grid.Row="0"
+                    Background="#FFF4E8D3"
+                    Margin="30,20,30,10"
+                    Padding="20"
+                    CornerRadius="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Панель поиска по исполнителям -->
+                    <Border Grid.Row="0"
+                            Background="White"
+                            Padding="15"
+                            Margin="0,0,0,10"
+                            CornerRadius="8"
+                            x:Name="EmployeeSearchPanel"
+                            Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="👷 Поиск по исполнителю:"
+                                      FontFamily="Segoe UI"
+                                      FontSize="14"
+                                      FontWeight="SemiBold"
+                                      Foreground="#FF333333"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,15,0"/>
+
+                            <ComboBox x:Name="EmployeeCombo" 
+                                     Grid.Column="1"
+                                     Height="40"
+                                     FontFamily="Segoe UI"
+                                     FontSize="14"
+                                     Padding="10"
+                                     Margin="0,0,15,0"
+                                     VerticalContentAlignment="Center">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ComboBoxStyle}">
+                                        <Setter Property="Background" Value="White"/>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
+
+                            <Button x:Name="ShowEmployeeHistoryButton" 
+                                    Grid.Column="2"
+                                    Content="🔍 Показать" 
+                                    Style="{StaticResource PrimaryButton}"
+                                    Height="40"
+                                    MinWidth="100"
+                                    Click="ShowEmployeeHistoryButton_Click"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Панель поиска по адресам -->
+                    <Border Grid.Row="1"
+                            Background="White"
+                            Padding="15"
+                            CornerRadius="8"
+                            x:Name="AddressSearchPanel"
+                            Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="🏠 Поиск по адресу:"
+                                      FontFamily="Segoe UI"
+                                      FontSize="14"
+                                      FontWeight="SemiBold"
+                                      Foreground="#FF333333"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,15,0"/>
+
+                            <TextBox x:Name="AddressSearchBox" 
+                                    Grid.Column="1"
+                                    Height="40"
+                                    FontFamily="Segoe UI"
+                                    FontSize="14"
+                                    Padding="10"
+                                    Margin="0,0,15,0"
+                                    VerticalContentAlignment="Center"
+                                    KeyDown="AddressSearchBox_KeyDown">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                                        <Setter Property="Background" Value="White"/>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+
+                            <Button x:Name="ShowAddressHistoryButton" 
+                                    Grid.Column="2"
+                                    Content="🔍 Показать" 
+                                    Style="{StaticResource PrimaryButton}"
+                                    Height="40"
+                                    MinWidth="100"
+                                    Click="ShowAddressHistoryButton_Click"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Таблица истории -->
+            <Border Grid.Row="1" 
+                    Background="White"
+                    Margin="30,0,30,30"
+                    BorderBrush="#FFCCCCCC"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок таблицы -->
+                    <Border Grid.Row="0" 
+                            Background="#FF67BA80"
+                            Padding="20,15">
+                        <TextBlock Text="ИСТОРИЯ ВЫПОЛНЕНИЯ ЗАЯВОК"
+                                  FontFamily="Segoe UI"
+                                  FontSize="16"
+                                  FontWeight="Bold"
+                                  Foreground="White"/>
+                    </Border>
+
+                    <!-- Таблица -->
+                    <ListView x:Name="HistoryList" 
+                             Grid.Row="1"
+                             BorderThickness="0"
+                             SelectionMode="Single">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding ApplicationID}"/>
+                                <GridViewColumn Header="АДРЕС" Width="180" DisplayMemberBinding="{Binding Address}"/>
+                                <GridViewColumn Header="ЗАЯВИТЕЛЬ" Width="120" DisplayMemberBinding="{Binding ApplicantName}"/>
+                                <GridViewColumn Header="ТЕЛЕФОН" Width="100" DisplayMemberBinding="{Binding Phone}"/>
+                                <GridViewColumn Header="СТАТУС" Width="80" DisplayMemberBinding="{Binding Status}"/>
+                                <GridViewColumn Header="ИСПОЛНИТЕЛЬ" Width="120" DisplayMemberBinding="{Binding EmployeeName}"/>
+                                <GridViewColumn Header="СОЗДАНИЕ" Width="100" 
+                                               DisplayMemberBinding="{Binding CreateDate, StringFormat='dd.MM.yyyy'}"/>
+                                <GridViewColumn Header="ЗАВЕРШЕНИЕ" Width="100" 
+                                               DisplayMemberBinding="{Binding CompleteDate, StringFormat='dd.MM.yyyy'}"/>
+                                <GridViewColumn Header="ДНЕЙ" Width="50" DisplayMemberBinding="{Binding DaysToComplete}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

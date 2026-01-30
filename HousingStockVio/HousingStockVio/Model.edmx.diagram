@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a5c1b5ef9d014c2e9a6a9a9a6813a653" Name="Diagram1">
+        <EntityTypeShape EntityType="HousingStock2Model.Apartment" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Applications" Width="1.5" PointX="10" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Debt" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Employees" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Owners" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Partners" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Payment" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Roles" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.ServiceCategories" Width="1.5" PointX="7.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HousingStock2Model.Users" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <AssociationConnector Association="HousingStock2Model.FK_Owners_Apartment" ManuallyRouted="false" />
+        <AssociationConnector Association="HousingStock2Model.FK_Applications_ServiceCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="HousingStock2Model.FK_Debt_Owners" ManuallyRouted="false" />
+        <AssociationConnector Association="HousingStock2Model.FK_Employees_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="HousingStock2Model.FK_Payment_Owners" ManuallyRouted="false" />
+        <AssociationConnector Association="HousingStock2Model.FK_Users_Roles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,131 @@
+﻿<Window x:Class="HousingStockVio.ManagerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Панель руководителя" 
+        Height="700" 
+        Width="1100"
+        WindowStartupLocation="CenterScreen"
+        Icon="Resources/icon.ico">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource PrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource SecondaryBrush}" 
+                Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Логотип -->
+                <Image Grid.Column="0"
+                       Source="Resources/logo.png" 
+                       Height="40" 
+                       Width="40"
+                       VerticalAlignment="Center"
+                       Margin="0,0,15,0"/>
+
+                <TextBlock Grid.Column="1" 
+                          Text="Панель руководителя" 
+                          Style="{StaticResource HeaderTextBlock}"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"/>
+
+                <StackPanel Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+                    <TextBlock x:Name="UserNameText"
+                              Style="{StaticResource LabelTextBlock}"
+                              FontWeight="Bold"/>
+                    <TextBlock Text="Руководитель"
+                              Style="{StaticResource LabelTextBlock}"
+                              Foreground="{StaticResource LightTextBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Панель навигации -->
+            <Border Grid.Column="0" 
+                    Background="{StaticResource SecondaryBrush}" 
+                    BorderBrush="{StaticResource BorderBrush}" 
+                    BorderThickness="0,0,1,0"
+                    Width="220">
+
+                <StackPanel Margin="15">
+                    <Button Content="📊 Дашборд" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="DashboardButton_Click"/>
+
+                    <Button Content="💰 Финансовое состояние" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="FinanceButton_Click"/>
+
+                    <Button Content="📈 Доходы и расходы" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="IncomeExpensesButton_Click"/>
+
+                    <Button Content="📋 Заявки на ремонт" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="ApplicationsButton_Click"/>
+
+                    <Button Content="📜 История заявок" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="HistoryButton_Click"/>
+
+                    <Button Content="👥 Управление персоналом" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,10"
+                            Click="StaffManagementButton_Click"/>
+
+                    <Button Content="📊 Эффективность компании" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="45"
+                            Margin="0,0,0,20"
+                            Click="EfficiencyButton_Click"/>
+
+                    <Button Content="🚪 Выход" 
+                            Style="{StaticResource DangerButton}"
+                            Height="45"
+                            Click="LogoutButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Область данных -->
+            <Border Grid.Column="1" 
+                    Background="{StaticResource PrimaryBrush}"
+                    Padding="20">
+                <Frame x:Name="MainFrame"
+                       NavigationUIVisibility="Hidden"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

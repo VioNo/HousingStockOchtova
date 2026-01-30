@@ -1,0 +1,115 @@
+﻿<Window x:Class="HousingStockVio.EmployeeMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Панель сотрудника" 
+        Height="700" 
+        Width="1100"
+        WindowStartupLocation="CenterScreen"
+        Icon="Resources/icon.ico">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource SecondaryBrush}" 
+                Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Логотип -->
+                <Image Grid.Column="0"
+                       Source="Resources/logo.png" 
+                       Height="40" 
+                       Width="40"
+                       VerticalAlignment="Center"/>
+
+                <!-- Заголовок -->
+                <TextBlock Grid.Column="1" 
+                          Text="Панель сотрудника" 
+                          FontSize="24" 
+                          FontWeight="Bold" 
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"/>
+
+                <!-- Информация о пользователе -->
+                <StackPanel Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+                    <TextBlock x:Name="UserNameText"
+                              FontSize="12"
+                              FontWeight="Bold"/>
+                    <TextBlock Text="Сотрудник"
+                              FontSize="11"
+                              Foreground="{StaticResource LightTextBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Панель навигации -->
+            <Border Grid.Column="0" 
+                    Background="#F8F9FA" 
+                    BorderBrush="{StaticResource BorderBrush}" 
+                    BorderThickness="0,0,1,0"
+                    Width="200">
+
+                <StackPanel Margin="0,20,0,0">
+
+                    <Button Content="Мои заявки" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Width="180"
+                            Margin="10,0,10,10"
+                            Click="MyApplicationsButton_Click"
+                            ToolTip="Просмотр заявок, назначенных мне"/>
+
+                    <Button Content="График работ" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Width="180"
+                            Margin="10,0,10,10"
+                            Click="WorkScheduleButton_Click"
+                            ToolTip="Просмотр графика работ"/>
+
+                    <Button Content="Изменить статус" 
+                            Style="{StaticResource PrimaryButton}"
+                            Height="40"
+                            Width="180"
+                            Margin="10,0,10,10"
+                            Click="ChangeStatusButton_Click"
+                            ToolTip="Изменение статуса заявок"/>
+
+                    <!-- Кнопка выхода -->
+                    <Button Content="Выход" 
+                            Style="{StaticResource DangerButton}"
+                            Height="40"
+                            Width="180"
+                            Margin="10,20,10,10"
+                            Click="LogoutButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Область данных -->
+            <Border Grid.Column="1" 
+                    Background="{StaticResource PrimaryBrush}"
+                    Padding="20">
+                <Frame x:Name="MainFrame"
+                       NavigationUIVisibility="Hidden"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
